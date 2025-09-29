@@ -1,65 +1,67 @@
 // ----=  HANDS  =----
 /* load images here */
-
+let frameImages = []; // Array to store the 10 images
 
 function prepareInteraction() {
   //bgImage = loadImage('/images/background.png');
-
+  
+  // Load all 10 frames
+  for (let i = 1; i <= 10; i++) {//for loop for loading all images automatically
+    frameImages[i] = loadImage('/images/' + i + '.webp');
+  }
 }
 
 function drawInteraction(faces, hands) {
 
   // hands part
   // for loop to capture if there is more than one hand on the screen. This applies the same process to all hands.
+ 
+
   for (let i = 0; i < hands.length; i++) {
     let hand = hands[i];
-    //console.log(hand);
+ 
     if (showKeypoints) {
       drawConnections(hand)
     }
 
     // This is how to load in the x and y of a point on the hand.
-    let indexFingerTipX = hand.index_finger_tip.x;
-    let indexFingerTipY = hand.index_finger_tip.y;
-
-    let pinkyFingerTipX = hand.pinky_finger_tip.x;
-    let pinkyFingerTipY = hand.pinky_finger_tip.y;
+  
 
     let wristX = hand.wrist.x;
     let wristY = hand.wrist.y;
-    let wristZ = hand.wrist.z3D;
-
     let middleFingerTipX = hand.middle_finger_tip.x;
     let middleFingerTipY = hand.middle_finger_tip.y;
-    let middleFingerTipZ = hand.middle_finger_tip.z3D;
+   
 
-    let thumbMcpX = hand.thumb_mcp.x;
-    let thumbMcpY = hand.thumb_mcp.y;
-    let thumbMcpZ = hand.thumb_mcp.z3D;
+ 
 
     /*
     Start drawing on the hands here
     */
-
-    // fill(0,0,255);
-
-    let pink = color(255, 92, 166);
-    let blue = color(0, 0, 255);
-    
-    
-    let distance = dist(wristX, wristY, middleFingerTipX, middleFingerTipY);
+   
+    let distance = dist(wristX, wristY, middleFingerTipX, middleFingerTipY); //how to calculate whether fist or open using distance between wrist and middle finger
     
 
-    let minDistance = 50;  // Close distance 
-    let maxDistance = 300; // Far distance 
-    let distClr = map(distance, minDistance, maxDistance, 0, 1);
-    distClr = constrain(distClr, 0, 1); 
+    console.log("Distance:", distance);
+    
+    let minDistance = 100;  //fist 
+    let maxDistance = 500; // palm open
+    
+   
+    let frameNum = map(distance, minDistance, maxDistance, 1, 10); //mapping frame number to distance
+    
+    // frameNum = constrain(frameNum, 1, 10); // Keep it inside number of frames for later if neccessary
+    frameNum = floor(frameNum); // Make it an integer
+    
+    
+    console.log("Frame:", frameNum)//debug
+    
 
-    let clr = lerpColor(pink, blue, distClr);
-    stroke(clr);
-    strokeWeight(5);
-    // ellipse(indexFingerTipX, indexFingerTipY, 30, 30);
-    line(wristX, wristY, middleFingerTipX, middleFingerTipY);
+    if (frameImages[frameNum]) {// imaging flower
+      push();
+      image(frameImages[frameNum], 0, 0, width, height);
+      pop();
+    }
 
     // drawPoints(hand)
 
