@@ -1,10 +1,14 @@
 // ----=  HANDS  =----
 /* load images here */
+
+
 function prepareInteraction() {
   //bgImage = loadImage('/images/background.png');
+
 }
 
 function drawInteraction(faces, hands) {
+
   // hands part
   // for loop to capture if there is more than one hand on the screen. This applies the same process to all hands.
   for (let i = 0; i < hands.length; i++) {
@@ -18,21 +22,50 @@ function drawInteraction(faces, hands) {
     let indexFingerTipX = hand.index_finger_tip.x;
     let indexFingerTipY = hand.index_finger_tip.y;
 
-    //  let pinkyFingerTipX = hand.pinky_finger_tip.x;
-    //  let pinkyFingerTipY = hand.pinky_finger_tip.y;
+    let pinkyFingerTipX = hand.pinky_finger_tip.x;
+    let pinkyFingerTipY = hand.pinky_finger_tip.y;
+
+    let wristX = hand.wrist.x;
+    let wristY = hand.wrist.y;
+    let wristZ = hand.wrist.z3D;
+
+    let middleFingerTipX = hand.middle_finger_tip.x;
+    let middleFingerTipY = hand.middle_finger_tip.y;
+    let middleFingerTipZ = hand.middle_finger_tip.z3D;
+
+    let thumbMcpX = hand.thumb_mcp.x;
+    let thumbMcpY = hand.thumb_mcp.y;
+    let thumbMcpZ = hand.thumb_mcp.z3D;
 
     /*
     Start drawing on the hands here
     */
 
-    fill(225, 225, 0);
-    ellipse(indexFingerTipX, indexFingerTipY, 30, 30);
+    // fill(0,0,255);
+
+    let pink = color(255, 92, 166);
+    let blue = color(0, 0, 255);
+    
+    
+    let distance = dist(wristX, wristY, middleFingerTipX, middleFingerTipY);
+    
+
+    let minDistance = 50;  // Close distance 
+    let maxDistance = 300; // Far distance 
+    let distClr = map(distance, minDistance, maxDistance, 0, 1);
+    distClr = constrain(distClr, 0, 1); 
+
+    let clr = lerpColor(pink, blue, distClr);
+    stroke(clr);
+    strokeWeight(5);
+    // ellipse(indexFingerTipX, indexFingerTipY, 30, 30);
+    line(wristX, wristY, middleFingerTipX, middleFingerTipY);
 
     // drawPoints(hand)
 
-    //fingerPuppet(indexFingerTipX, indexFingerTipY);
+    // fingerPuppet(indexFingerTipX, indexFingerTipY);
 
-    //chameleonHandPuppet(hand)
+    // chameleonHandPuppet(hand)
 
     /*
     Stop drawing on the hands here
@@ -42,11 +75,6 @@ function drawInteraction(faces, hands) {
   //------------------------------------------------------
 }
 
-
-
-
-
-
 function fingerPuppet(x, y) {
   fill(255, 38, 219) // pink
   ellipse(x, y, 100, 20)
@@ -54,9 +82,7 @@ function fingerPuppet(x, y) {
 
   fill(255, 252, 48) // yellow
   ellipse(x, y, 20) // draw center 
-
 }
-
 
 function pinchCircle(hand) { // adapted from https://editor.p5js.org/ml5/sketches/DNbSiIYKB
   // Find the index finger tip and thumb tip
@@ -75,7 +101,6 @@ function pinchCircle(hand) { // adapted from https://editor.p5js.org/ml5/sketche
   stroke(0);
   strokeWeight(2);
   circle(centerX, centerY, pinch);
-
 }
 
 function chameleonHandPuppet(hand) {
@@ -101,7 +126,6 @@ function chameleonHandPuppet(hand) {
   let indexFingerTipY = hand.index_finger_tip.y;
   fill(0)
   circle(indexFingerTipX, indexFingerTipY, 20);
-
 }
 
 function drawConnections(hand) {
@@ -119,7 +143,6 @@ function drawConnections(hand) {
   pop()
 }
 
-
 // This function draw's a dot on all the keypoints. It can be passed a whole face, or part of one. 
 function drawPoints(feature) {
   push()
@@ -130,5 +153,4 @@ function drawPoints(feature) {
     circle(element.x, element.y, 10);
   }
   pop()
-
 }

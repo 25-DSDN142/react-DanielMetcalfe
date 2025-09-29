@@ -33,6 +33,22 @@ function drawInteraction(faces, hands) {
     }
 
 
+    if (whatGesture == "Fist") {
+      fill(0,0,255) // yellow
+    }
+
+    if (whatGesture == "Open Palm") {
+      fill(0,255,255) // yellow
+    }
+    
+    let blue= color(0,0,255);
+    let red = color (255,0,0);
+   let opening = map()
+    let openingCLR = lerpColor(blue,red,opening)
+    
+    fill (openingCLR);
+
+
     if (hand.handedness === "Right") {
       rect(middleFingerMcpX, middleFingerMcpY, 100)
     }

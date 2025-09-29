@@ -4,7 +4,7 @@ function prepareInteraction() {
 }
 
 function drawInteraction(faces, hands) {
-/
+
   // hands part
   // USING THE GESTURE DETECTORS (check their values in the debug menu)
   // detectHandGesture(hand) returns "Pinch", "Peace", "Thumbs Up", "Pointing", "Open Palm", or "Fist"
