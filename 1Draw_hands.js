@@ -1,22 +1,23 @@
 // ----=  HANDS  =----
 /* load images here */
 let frameImages = []; // Array to store the 10 images
+let previousDistance = 0;
 
 function prepareInteraction() {
   //bgImage = loadImage('/images/background.png');
   
-  // Load all 10 frames
-  for (let i = 1; i <= 10; i++) {//for loop for loading all images automatically
+  // Load all 24 frames
+  for (let i = 1; i <= 24; i++) {//for loop for loading all images automatically
     frameImages[i] = loadImage('/images/' + i + '.webp');
   }
 }
 
 function drawInteraction(faces, hands) {
 
+  background(0);//test bg
+
   // hands part
   // for loop to capture if there is more than one hand on the screen. This applies the same process to all hands.
- 
-
   for (let i = 0; i < hands.length; i++) {
     let hand = hands[i];
  
@@ -25,15 +26,10 @@ function drawInteraction(faces, hands) {
     }
 
     // This is how to load in the x and y of a point on the hand.
-  
-
     let wristX = hand.wrist.x;
     let wristY = hand.wrist.y;
     let middleFingerTipX = hand.middle_finger_tip.x;
     let middleFingerTipY = hand.middle_finger_tip.y;
-   
-
- 
 
     /*
     Start drawing on the hands here
@@ -41,22 +37,23 @@ function drawInteraction(faces, hands) {
    
     let distance = dist(wristX, wristY, middleFingerTipX, middleFingerTipY); //how to calculate whether fist or open using distance between wrist and middle finger
     
-
-    console.log("Distance:", distance);
+    if (previousDistance === 0) { //
+      previousDistance = distance;
+    }
+    let smoothedDistance = lerp(previousDistance, distance, 0.3); //making the animation smoother
+    previousDistance = smoothedDistance;
+    
+  
     
     let minDistance = 100;  //fist 
-    let maxDistance = 500; // palm open
+    let maxDistance = 300; // palm open
     
-   
-    let frameNum = map(distance, minDistance, maxDistance, 1, 10); //mapping frame number to distance
+    let frameNum = map(smoothedDistance, minDistance, maxDistance, 1, 24); //mapping frame number to distance
     
-    // frameNum = constrain(frameNum, 1, 10); // Keep it inside number of frames for later if neccessary
-    frameNum = floor(frameNum); // Make it an integer
+    frameNum = constrain(frameNum, 1, 24); // Keep it inside number of frames for later if neccessary
+    frameNum = round(frameNum); // Make it an integer
     
     
-    console.log("Frame:", frameNum)//debug
-    
-
     if (frameImages[frameNum]) {// imaging flower
       push();
       image(frameImages[frameNum], 0, 0, width, height);
