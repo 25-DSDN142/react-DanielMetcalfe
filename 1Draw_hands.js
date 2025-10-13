@@ -5,6 +5,9 @@ let previousDistance = 0; //previous distance is the last recorded hand position
 let previousDistanceLeft = 0;
 let grass; //static grass image
 let clouds;// animated clouds image
+let texture;
+let texture2;
+
 let Night= 0; //day night bg lerpColor switch, day =0, 1= night
 let Night2= 0;
 
@@ -21,6 +24,8 @@ function prepareInteraction() {
 
   grass = loadImage('/images/grass.png'); //loading the static grass overlay
   clouds = loadImage('/images/clouds.png'); //loading the image for cloud animation
+  texture = loadImage('/images/riso1.png'); //loading texture overlay layers
+  texture2 = loadImage('/images/riso3.png');
 }
 
 function drawInteraction(faces, hands) {
@@ -63,8 +68,8 @@ function drawInteraction(faces, hands) {
  
   push();
    
- noStroke();
-  fill(circleColour);
+stroke(12);
+fill(circleColour);
 
   let circleX= (width *(2/3)+80); // sun/moon x location
   let circleY= height/4;// sun/moon y location
@@ -179,9 +184,20 @@ function drawInteraction(faces, hands) {
   }
 
   
-  
-
   image(grass, 0, 0, width, height);//imaging the static grass overlay
+
+
+  //texture overlays to give more character to sketch
+  
+tint(255, 80); //using tint function to overlay some textures over the top of sketch by adusting opacity
+  image(texture, 0, 0, width, height); //texture 1
+  tint(255, 255); //resetting opacity to 100 percent
+
+  tint(255, 30); 
+  image(texture2, 0, 0, width, height); //texture2
+  tint(255, 255);//resetting opacity to 100 percent
+ 
+ 
   // You can make addtional elements here, but keep the hand drawing inside the for loop. 
   //------------------------------------------------------
 }
