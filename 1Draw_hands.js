@@ -14,7 +14,9 @@ function prepareInteraction() {
 
 function drawInteraction(faces, hands) {
 
-  background(0);//test bg
+  let bgClr = color(95,215,255); //blue
+  
+  background(bgClr);//test bg
 
   // hands part
   // for loop to capture if there is more than one hand on the screen. This applies the same process to all hands.
@@ -37,26 +39,28 @@ function drawInteraction(faces, hands) {
    
     let distance = dist(wristX, wristY, middleFingerTipX, middleFingerTipY); //how to calculate whether fist or open using distance between wrist and middle finger
     
-    if (previousDistance === 0) { //
-      previousDistance = distance;
+    if (previousDistance === 0) { //a way to make it so that the first frame that is shown is always the position that your hand is at, rather than starting from somewhere else and rapidly jolting to that position, this makes it smoother but also makes it feel more interactive
+      previousDistance = distance; // starts previous distance at whatever the distance between the wrist and middle finger is, essentially what your hand position is
     }
-    let smoothedDistance = lerp(previousDistance, distance, 0.3); //making the animation smoother
-    previousDistance = smoothedDistance;
+    
+    let smoothedDistance = lerp(previousDistance, distance, 0.3); //making the animation smoother by essentially taking a point in between the previous distance and new distance of the points on the hand, this ensures that the frame that is displayed is close enough to the previous one that is doesn't get jumpy, this is repeated for the next frame etc so it always goes forwards or backwards in frames but it does it slower than realtime movement. the 0.3 value makes it slower to transition to the next as it keeps the point closer to the previous distance than the new distance.
+    previousDistance = smoothedDistance; //setting the previous distance as this new inbetween value for smooth
     
   
     
-    let minDistance = 100;  //fist 
+    let minDistance = 100;  //fist motif with the hand
     let maxDistance = 300; // palm open
     
-    let frameNum = map(smoothedDistance, minDistance, maxDistance, 1, 24); //mapping frame number to distance
+    let frameNum = map(smoothedDistance, minDistance, maxDistance, 1, 24); //mapping frame number to distance using smoothed value to keep smooth animation
     
     frameNum = constrain(frameNum, 1, 24); // Keep it inside number of frames for later if neccessary
-    frameNum = round(frameNum); // Make it an integer
+    frameNum = round(frameNum); // Make it an integer, ensures that it always plays a frame as the frames are number 1 through 24
     
     
-    if (frameImages[frameNum]) {// imaging flower
+    if (frameImages[frameNum]) {// imaging flowers frame
+     
       push();
-      image(frameImages[frameNum], 0, 0, width, height);
+      image(frameImages[frameNum], 0, 0, width, height); //imaging
       pop();
     }
 
