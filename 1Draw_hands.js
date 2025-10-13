@@ -38,6 +38,26 @@ function drawInteraction(faces, hands) {
   
   background(bgClr);//test bg
 
+  //stars
+
+  if (Night > 0.3) { //making it so the stars only appear at night, using the same frame work that maps the left hand to colour to control this
+
+  randomSeed(50); // locking randomness so that it doesn't change every frame, I just liked how it looked at 50 so went with that
+  noStroke();
+ for (let i = 0; i < 350; i++) { //for loop for the stars so I could make it in p5, 350 stars looked good
+  
+  let x = random(width); //random placement between 0 and width 
+  let y = random(height); //random placement between 0 and height
+
+  let starSize = random(2, 3); //setting the size of the stars randomly between 2 and 3 pixels for variation
+  let brightness = random(100, 255); //randomly setting the brightness of a star so it looks more like stars, randomly choosing a different greyscale tone to emulate brightness differences
+  
+  fill(brightness);// star brightness/colour
+  
+  circle(x, y, starSize); //individual star
+}
+  }
+
 //sun and moon
   let circleColour = lerpColor ( yellow, grey, Night2);  //lerpColor to map the left hand to morph between sun and moon when it goes from day to night
  
@@ -46,7 +66,7 @@ function drawInteraction(faces, hands) {
  noStroke();
   fill(circleColour);
 
-  let circleX= width *(2/3); // sun/moon x location
+  let circleX= (width *(2/3)+80); // sun/moon x location
   let circleY= height/4;// sun/moon y location
   let circleSize= 150; // sun/moon size
 
@@ -73,6 +93,7 @@ function drawInteraction(faces, hands) {
 
   image(clouds, cloudX, 0, 1280, 960); //imaging the clouds
   image(clouds, cloudX2, 0, 1280, 960);
+
 
 
   // hands part
@@ -157,6 +178,7 @@ function drawInteraction(faces, hands) {
     */
   }
 
+  
   
 
   image(grass, 0, 0, width, height);//imaging the static grass overlay
