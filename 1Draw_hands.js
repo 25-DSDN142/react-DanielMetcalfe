@@ -38,8 +38,25 @@ function drawInteraction(faces, hands) {
   
   background(bgClr);//test bg
 
+//sun and moon
+  let circleColour = lerpColor ( yellow, grey, Night2);  //lerpColor to map the left hand to morph between sun and moon when it goes from day to night
+ 
+  push();
+   
+ noStroke();
+  fill(circleColour);
 
-  let circleColour = lerpColor ( yellow, grey, Night2);
+  let circleX= width *(2/3); // sun/moon x location
+  let circleY= height/4;// sun/moon y location
+  let circleSize= 150; // sun/moon size
+
+  ellipse(circleX,circleY,circleSize); //sun/moon
+
+  pop();
+
+
+
+  ///clouds
   
   let cloudSpeed = 20 * frameRate(); //controls the speed of the cloud animation,being used to control the x position, using the frameRate function and times it by 20 to get slower rate as it will be divided by this value next. Using frameRate instead of frameCount so that the animation is always the same
   
@@ -121,8 +138,13 @@ function drawInteraction(faces, hands) {
     let minDistance = 100;//fist, minimum distance between the wrist and middlefinger tip used to map the start position of the lerpColor value ,0 
     let maxDistance = 300;//palm open, maximum distance, used as the distance between the wrist and finger that marks the end of the lerpColor value, 1
     
+    //bg colour
     Night = map(smoothedDistanceLeft, minDistance, maxDistance, 0, 1); //mapping the position/distance of the hand to the morph section of lerpColor to change the colour from blue to navy
     Night = constrain(Night, 0, 1); //making it so that it can't go outside 0 and 1 incase someones hand is bigger/smaller than the min max
+  
+     //sun and moon colour
+    Night2 = map(smoothedDistanceLeft, minDistance, maxDistance, 0, 1); //mapping the position/distance of the hand to the morph section of lerpColor to change the colour from blue to navy
+    Night2 = constrain(Night2, 0, 1); //making it so that it can't go outside 0 and 1 incase someones hand is bigger/smaller than the min max
   }
 
     
