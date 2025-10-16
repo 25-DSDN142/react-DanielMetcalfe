@@ -3,7 +3,6 @@
 
 //use BothTracker for all elements to be included as the scene is mapped to both the hands and face
 
-
 let previousDistance = 0; //previous distance is the last recorded right hand position, the last know distance between the wrist and middle finger tip. This is used to make sure mapping the hand to the flower ends up smooth
 let previousDistanceLeft = 0; //left hand version of above variable
 
