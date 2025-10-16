@@ -1,5 +1,8 @@
-// ----=  HANDS  =----
-/* load images here */
+//Daniel Metcalfe
+//DSDN142 Assignment 3
+
+//use BothTracker for all elements to be included as the scene is mapped to both the hands and face
+
 
 let previousDistance = 0; //previous distance is the last recorded right hand position, the last know distance between the wrist and middle finger tip. This is used to make sure mapping the hand to the flower ends up smooth
 let previousDistanceLeft = 0; //left hand version of above variable
@@ -29,6 +32,10 @@ let directionThreshold = 5; //the threshold of when to make the switch in direct
 let butterflyFrameNumber = 0; //variable for imaging a frame from the array for the butterfly animation
 let butterflyFrameCount = 0; //counter used to make the frameRate of the butterfly animation play at 24fps but keep sketch frame Rate at 60fps to allow smooth animations coded in p5
 
+//instructions UI overlay
+let instructions; // instructions image
+let showInstructions = true; //true false for mouse click dismissing UI
+
 function prepareInteraction() {
   //bgImage = loadImage('/images/background.png');
   
@@ -46,11 +53,30 @@ function prepareInteraction() {
   clouds = loadImage('/images/clouds.png'); //loading the image for cloud animation
   texture = loadImage('/images/riso1.png'); //loading texture overlay layers
   texture2 = loadImage('/images/riso3.png');
+  instructions = loadImage('/images/instructions.png')//loading image for instruction UI overlay
 }
 
 
 function drawInteraction(faces, hands) {
 
+  backgroundElements();// sky, sun/moon, clouds, stars
+  
+  butterfly(faces);//butterfly mapped to face
+  
+  flowersAndDayNight(hands); //flowers and day night change mapped to hands
+  
+  foregroundElements(); //grass and texture overlays
+
+  instructionUI(); //instruction UI for sketch startup
+  
+}
+
+function backgroundElements() {
+   //function to clean up the drawInteractions function
+   //sky, stars,sun/moon, clouds
+  
+  //sky
+ 
   //colours for the background to morph between day and night
   let blue = color(95,215,255); //blue,day
   let navy = color(0,16,86); //navy, night
@@ -62,8 +88,8 @@ function drawInteraction(faces, hands) {
   
   background(bgClr);
 
-  //stars
 
+  //stars
   if (Night > 0.3) { //making it so the stars only appear at night, using the same frame work that maps the left hand to colour to control this
 
   randomSeed(50); // locking randomness so that it doesn't change every frame, I just liked how it looked at 50 so went with that
@@ -81,8 +107,9 @@ function drawInteraction(faces, hands) {
   circle(x, y, starSize); //individual star
 }
   }
-
-//sun and moon
+  
+  //sun and moon
+  
   let circleColour = lerpColor ( yellow, grey, Night2);  //lerpColor to map the left hand to morph between sun and moon when it goes from day to night
  
   push();
@@ -98,9 +125,9 @@ function drawInteraction(faces, hands) {
 
   pop();
 
-
- //clouds
   
+  //clouds
+
   let cloudSpeed = 20 * frameRate(); //controls the speed of the cloud animation,being used to control the x position, using the frameRate function and times it by 20 to get slower rate as it will be divided by this value next. Using frameRate instead of frameCount so that the animation is always the same
   
   cloudX += (2560) / (cloudSpeed); //the first run of clouds, this animates the clouds by mapping the x position to the frameRate, 1280 is the width of the sketch and the image size, 2560 as that is the distance needed to have the 1280 image go fully of the left and right side of sketch
@@ -116,7 +143,14 @@ function drawInteraction(faces, hands) {
 
   image(clouds, cloudX, 0, 1280, 960); //imaging the clouds
   image(clouds, cloudX2, 0, 1280, 960);
+}
 
+
+
+function butterfly(faces) {
+  //function to clean up the drawInteractions function
+  //butterfly layer
+  
   if (faces.length > 0) {
     face = faces[0];
     let faceCenterX = face.faceOval.centerX;
@@ -178,7 +212,9 @@ function drawInteraction(faces, hands) {
   }
 
   imageMode(CORNER); ///resetting the imageMode so the rest of the images aren't effected
+}
 
+function flowersAndDayNight(hands) {
   // hands part
   // for loop to capture if there is more than one hand on the screen. This applies the same process to all hands.
   for (let i = 0; i < hands.length; i++) {
@@ -249,23 +285,40 @@ function drawInteraction(faces, hands) {
   }
 
   }
+}
 
-  
-  image(grass, 0, 0, width, height);//imaging the static grass overlay
+function foregroundElements() {
+//function to clean up the drawInteractions function
+//static grass and texture overlays
 
-  //texture overlays to give more character to sketch
+//grass
+
+image(grass, 0, 0, width, height);//imaging the static grass overlay
+
+
+//texture overlays to give more character to sketch
   
 tint(255, 80); //using tint function to overlay some textures over the top of sketch by adusting opacity
-  image(texture, 0, 0, width, height); //texture 1
-  tint(255, 255); //resetting opacity to 100 percent
+image(texture, 0, 0, width, height); //texture 1
+tint(255, 255); //resetting opacity to 100 percent
 
-  tint(255, 30); 
-  image(texture2, 0, 0, width, height); //texture2
-  tint(255, 255);//resetting opacity to 100 percent
- 
- 
-  // You can make addtional elements here, but keep the hand drawing inside the for loop. 
-  //------------------------------------------------------
+tint(255, 30); 
+image(texture2, 0, 0, width, height); //texture2
+tint(255, 255);//resetting opacity to 100 percent
 }
 
 
+function instructionUI() {
+  //function to clean up drawInteraction function
+  //images an instructional UI at start up
+  
+  if (showInstructions) {// true false variable to dismiss UI with mouse click
+    image(instructions, 0, 0, width, height);
+  }
+}
+
+function mouseReleased() {
+  //function to dismiss instruction UI by clicking mouse 
+  
+  showInstructions = false;
+}
